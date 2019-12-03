@@ -1,36 +1,36 @@
 import numpy as np
-import simpleaudio
+import simpleaudio as sa
 
-frequency = 220  # Our played note will be 440 Hz
-fs = 8000  # 44100 samples per second
-seconds = 0.5  # Note duration of 3 seconds
+# calculate note frequencies
+A_freq = 440
+Csh_freq = A_freq * 2 ** (4 / 12)
+E_freq = A_freq * 2 ** (7 / 12)
 
-# Generate array with seconds*sample_rate steps, ranging between 0 and seconds
-t = np.linspace(0, seconds, seconds * fs, False)
+# get timesteps for each sample, T is note duration in seconds
+sample_rate = 44100
+T = 0.25
+t = np.linspace(0, T, T * sample_rate, False)
 
-# Generate a 440 Hz sine wave
-note = np.sin(frequency * t * 2 * np.pi)
-note = frequency * t * 2 * np.pi
-print(note)
+# generate sine wave notes
+A_note = np.sin(A_freq * t * 2 * np.pi)
+Csh_note = np.sin(Csh_freq * t * 2 * np.pi)
+E_note = np.sin(E_freq * t * 2 * np.pi)
 
-# Ensure that highest value is in 16-bit range
-audio = note * (2**15 - 1) / np.max(np.abs(note))
-# Convert to 16-bit data
-audio = audio.astype(np.int8)
-
-# Start playback
-play_obj = simpleaudio.play_buffer(audio, 1, 2, fs)
-
-# Wait for playback to finish before exiting
-play_obj.wait_done()
-
-bpm = 120
-intro_melody = 'somefile.txt'
-intro = Melody(intro_melody, bpm)
-intro = 
+# concatenate notes
+notes = np.hstack((A_note, Csh_note, E_note))
+chord = (A_note+Csh_note+E_note)/3
+audio = notes
 
 for i in range(4):
-    intro.play()
+    audio = np.hstack((audio, chord))
 
-    if i == 4:
-        
+# normalize to 16-bit range
+audio *= 32767 / np.max(np.abs(audio))
+# convert to 16-bit data
+audio = audio.astype(np.int16)
+
+# start playback
+play_obj = sa.play_buffer(audio, 1, 2, sample_rate)
+
+# wait for playback to finish before exiting
+play_obj.wait_done()
