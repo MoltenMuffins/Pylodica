@@ -17,11 +17,12 @@ the pylodica API to work
 # as we will demonstrate later. When instantiating a bar,
 # we need to pass in a time signature as an argument
 
-# time signatures consist of two numerals 'N/M'
-# The numeral 'N' before the '/' indicates the note value that represents one beat 
+# time signatures are passed in as a tuple of two numerals (N, M)
+# The numeral 'N'  indicates how many beats (N) constitute a bar.
+# The numeral 'M'  indicates the note value that represents one beat 
 # (the beat unit). This number is typically a power of 2.
-# The numeral 'M' after the '/' indicates how many such beats (N) constitute a bar.
-example_bar = pylodica.bar(time_sig='4/4')
+
+example_bar = pylodica.Bar(time_sig=(4, 4))
 
 # We can add notes or a stroke to a bar.
 
@@ -45,8 +46,8 @@ example_bar.stroke(instrument, index)
 
 # Here's an example of building a drum beat in
 # a 4/4 time signature using some conditional logic
-drum_bar = pylodica.bar(time_sig='4/4')
-for i in range(3):
+drum_bar = pylodica.Bar(time_sig=(4, 4))
+for i in range(4):
     time = i+1
     drum_bar.stroke('hihat', time)
 
@@ -65,7 +66,7 @@ for i in range(3):
 # Extend the drum beat by chaining multiple drum_bars together
 drums = pylodica.chain([drum_bar] * 4)
 
-bar3 = pylodica.stack([melody_bar, drum_bar])
+# bar3 = pylodica.stack([melody_bar, drum_bar])
 
 # Play bar 1 after bar 2
 
