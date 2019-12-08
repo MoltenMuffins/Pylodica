@@ -7,8 +7,9 @@ Csh_freq = A_freq * 2 ** (4 / 12)
 E_freq = A_freq * 2 ** (7 / 12)
 
 # get timesteps for each sample, T is note duration in seconds
-sample_rate = 44100
-T = 0.25
+# sample_rate = 44100
+sample_rate = 8000
+T = 0.3
 t = np.linspace(0, T, T * sample_rate, False)
 
 # generate sine wave notes
@@ -21,7 +22,7 @@ notes = np.hstack((A_note, Csh_note, E_note))
 chord = (A_note+Csh_note+E_note)/3
 audio = notes
 
-for i in range(4):
+for i in range(3):
     audio = np.hstack((audio, chord))
 
 # normalize to 16-bit range

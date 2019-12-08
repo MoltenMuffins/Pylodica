@@ -44,7 +44,26 @@ example_bar.stroke(instrument, index)
 # a high-level interface for simpleaudio, allowing
 # one to programatically generate songs
 
-# Here's an example of building a drum beat in
+# Here's an example of building a simple melody
+# across two bars
+duration = 0.5
+melody_bar1 = pylodica.Bar(time_sig=(4, 4))
+for i in range(4):
+    time = i+1
+    if time % 2 == 0:
+        melody_bar1.note(2, time, duration)
+    else:
+        melody_bar1.note(1, time, duration)
+
+melody_bar2 = pylodica.Bar(time_sig=(4, 4))
+for i in range(5):
+    note_index = 1 + (0.5 * i)
+    key = i+1
+    if key > 3:
+        key = 5-i
+    melody_bar1.note(key, note_index, duration)
+
+# Here's another example of building a drum beat in
 # a 4/4 time signature using some conditional logic
 drum_bar = pylodica.Bar(time_sig=(4, 4))
 for i in range(4):
@@ -63,10 +82,14 @@ for i in range(4):
 # bars can be layered on top of one another or chained together
 # to make compounded bars. These work the same as regular bars
 
-# Extend the drum beat by chaining multiple drum_bars together
-drums = pylodica.chain([drum_bar] * 4)
+# Extend the drum beat by chaining two drum_bars together
+drums = pylodica.chain([drum_bar] * 2)
+# Chain the two melody bars together
+melody = pylodica.chain([melody_bar1, melody_bar2])
 
-# bar3 = pylodica.stack([melody_bar, drum_bar])
+# Stack the drums and melody
+song = pylodica.stack([melody, drums])
 
-# Play bar 1 after bar 2
+song.play(bpm=80)
+
 
