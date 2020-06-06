@@ -16,27 +16,27 @@ For example, you could create a folder at `C:\wsl` such that the binaries are lo
         * *line 42*  
             This disables recording audio via PulseAudio as WSL2 restricts access to recording devices.  
             Replace
-            > load-module module-waveout sink_name=output source_name=input  
+            > `load-module module-waveout sink_name=output source_name=input`  
 
             With  
-            > load-module module-waveout sink_name=output source_name=input record=0
+            > `load-module module-waveout sink_name=output source_name=input record=0`
 
         * *line 61*  
             This sets the  PulseAudio server to accept anonymous connections from `127.0.0.1` via TCP.  
             Replace  
-            > #load-module module-native-protocol-tcp  
+            > `#load-module module-native-protocol-tcp`  
 
             With
-            > load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+            > `load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1`
 
     * `etc\pulse\daemon.conf`  
         * *line 39*  
             The value of this variable is how many seconds to wait before the PulseAudio server kills itself after the last client disconnects. Setting this variable to a negative number keeps the PulseAudio server running.  
             Replace  
-            > ; exit-idle-time = 20 
+            > `; exit-idle-time = 20` 
 
             With
-            > exit-idle-time = -1  
+            > `exit-idle-time = -1`  
 
 4. Run 'bin\pulseaudio.exe' via powershell to check that you've made the changes correctly.  
     You might see the following shell output:
@@ -61,13 +61,13 @@ For example, you could create a folder at `C:\wsl` such that the binaries are lo
 
     * Create a batch file that you'll use to run linux that also starts the pulseaudio server 
         `C:\wsl\start_with_pulse.bat`
-        ```
+        ```powershell
         start "" /B "C:\<path>\<to>\<pulseaudio>\pulseaudio.exe"
         <distro_executable>.exe run "export PULSE_SERVER=tcp:127.0.0.1; pkill '(gpg|ssh)-agent'; taskkill.exe /IM pulseaudio.exe /F; fi;"
         ```
 
         Filled with proper filepaths it might look like.
-        ```
+        ```powershell
         start "" /B "C:\wsl\pulseaudio\bin\pulseaudio.exe"
         ubuntu.exe run "export PULSE_SERVER=tcp:127.0.0.1; pkill '(gpg|ssh)-agent'; taskkill.exe /IM pulseaudio.exe /F; fi;"
         ```
@@ -81,7 +81,10 @@ For example, you could create a folder at `C:\wsl` such that the binaries are lo
         * `taskkill.exe /IM pulseaudio.exe /F;` after `pkill '(gpg|ssh)-agent';`
 
 6. Run your linux instance and install PulseAudio if you haven't already.  
-    On ubuntu, this is achieved by `sudo apt-get pulseaudio`
+    On ubuntu, this is achieved by running  
+    ```bash
+    sudo apt-get update && apt-get install pulseaudio
+    ```
 
 7. Get your WSL's ip with this command for ubuntu `ifconfig eth0 | grep 'inet '`  
 this should print several ip addresses like so:  
