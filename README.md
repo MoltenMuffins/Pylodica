@@ -1,4 +1,4 @@
 # Pylodica
-A Python library for for creating music algorithmically
+A Python framework for for creating music algorithmically
 
 ## WIP
